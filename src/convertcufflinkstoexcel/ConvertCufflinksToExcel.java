@@ -37,18 +37,19 @@ public class ConvertCufflinksToExcel {
     private static SimpleModeCmdLineParser CreateCmdLineObject(){
         String nl = System.lineSeparator();
         String defaultusage = "ConvertCufflinkstoExcel: a program designed to process cufflinks files to human-readable text" + nl +
-                    "\tUsage: java -jar ConvertCufflinksToExcel.jar [mode] [arguments ...]" + nl +
-                    "\tModes:" + nl +
-                    "\t\tdiff\tProcesses multi-sample \"diff\" files and turns them into an xlsx spreasheet with highlighting" + nl;
+                    "Usage: java -jar ConvertCufflinksToExcel.jar [mode] [arguments ...]" + nl + nl +
+                    "Modes:" + nl +
+                    "\tdiff\tProcesses multi-sample \"diff\" files and turns them into an xlsx spreasheet with highlighting" + nl;
         SimpleModeCmdLineParser cmd = new SimpleModeCmdLineParser(defaultusage, "diff");
         
         cmd.AddMode("diff",
                 "ConvertCufflinksToExcel diff mode" + nl +
-                        "\tUsage: java -jar ConvertCufflinksToExcel.jar diff [-i input -o output] [other options]" + nl +
-                        "\t\t-i\tThe input \".diff\" file" + nl +
-                        "\t\t-o\tThe output file. MUST have .xlsx in the name!" + nl +
-                        "\t\t-k\tA keys file. Converts the \"q1\" sample designations to different names if selected" + nl, 
-                "i:o:k:", 
+                        "Usage: java -jar ConvertCufflinksToExcel.jar diff [-i input -o output] [other options]" + nl + nl +
+                        "\t-i\tThe input \".diff\" file" + nl +
+                        "\t-o\tThe output file. MUST have .xlsx in the name!" + nl +
+                        "\t-k\tA keys file. Converts the \"q1\" sample designations to different names if selected" + nl +
+                        "\t-n\tA flag that removes null entries (no data for any condition) from the excel file" + nl, 
+                "i:o:k:n|", 
                 "io", 
                 "iok", 
                 "input", "output", "keysfile");
