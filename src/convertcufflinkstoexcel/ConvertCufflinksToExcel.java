@@ -7,6 +7,7 @@
 package convertcufflinkstoexcel;
 
 import GetCmdOpt.SimpleModeCmdLineParser;
+import ProgramModes.DiffMode;
 
 /**
  *
@@ -25,6 +26,9 @@ public class ConvertCufflinksToExcel {
         switch(cmd.CurrentMode){
             case "diff":
                 System.err.println("[Converter] Entering diff conversion mode.");
+                DiffMode d = new DiffMode(cmd);
+                d.run();
+                break;
             default:
                 System.err.println("[Converter] Error! Did not specify mode for program!");
                 System.exit(-1);

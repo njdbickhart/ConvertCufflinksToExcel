@@ -12,6 +12,7 @@ import FormatStatics.HeaderFormats;
 import FormatStatics.HighlightStyle;
 import SetUtils.SortSetToList;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +89,14 @@ public class DiffExcelDefault {
         
         int row = 2;
         for(String l : locSet){
-            
+            CreateRowFromData(sheet, l, sampleSet, comparisonSet, row);
+            row++;
+        }
+        
+        try(FileOutputStream out = new FileOutputStream(file)){
+            wb.write(out);
+        }catch(IOException ex){
+            ex.printStackTrace();
         }
     }
     
