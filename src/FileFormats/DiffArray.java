@@ -75,7 +75,8 @@ public class DiffArray {
     
     public void ProcessDiffFile(){
         try(BufferedReader input = Files.newBufferedReader(DiffFile, Charset.defaultCharset())){
-            String line = null;
+            // Gets rid of the header
+            String line = input.readLine();
             while((line = input.readLine()) != null){
                 line = line.trim();
                 String[] segs = line.split("\t");
