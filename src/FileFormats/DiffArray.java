@@ -110,7 +110,7 @@ public class DiffArray {
         }
     }
         
-    private class DiffData{
+    public class DiffData{
         private final String comparison;
         private final String status;
         //private Double value1;
