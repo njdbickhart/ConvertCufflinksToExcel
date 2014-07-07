@@ -11,38 +11,28 @@ import FileFormats.DiffArray;
 import FileFormats.DiffData;
 import FormatStatics.HeaderFormats;
 import FormatStatics.HighlightStyle;
-import SetUtils.SortSetToList;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -309,14 +299,15 @@ public class DiffExcelDefault {
         sheet.addMergedRegion(first);
         sheet.addMergedRegion(second);
         
-        int col = 5 + sampleSet.size();
-        for(String s : comparisonSet){
-            Cell temp = FHeaderRow.createCell(col);
-            
+        //int col = 5 + sampleSet.size();
+        Iterator<String> compItr = comparisonSet.descendingIterator();
+        for(int i = 5 + sampleSet.size(); compItr.hasNext(); i += 6){
+            Cell temp = FHeaderRow.createCell(i);
+            String s = compItr.next();
             temp.setCellValue(s);
             temp.setCellStyle(this.headerStyles.get(s));
-            sheet.addMergedRegion(new CellRangeAddress(0,0,col,col + 5));
-            col += 6;
+            sheet.addMergedRegion(new CellRangeAddress(0,0,i,i + 5));
+            //col += 6;
         }        
         //CellRangeAddress third = new CellRangeAddress(0,0, 5 + sampleSet.size(), col - 6);
         
