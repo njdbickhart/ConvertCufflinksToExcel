@@ -28,6 +28,7 @@ public class DiffArray {
     private final Path DiffFile;
     private final HashMap<String, CufflinksCoords<DiffData>> genomiccoords = new HashMap<>(); // Key is the "LocName"
     private final HashMap<String, HashMap<String, Double>> rpkmvalues = new HashMap<>(); // First key is the "LocName," Second key is the sample id
+    private final HashSet<String> samples = new HashSet<>();
     private final Set<String> comparisons = new HashSet<>(); // Key is the sample name, "-", sample name
     
     
@@ -51,7 +52,7 @@ public class DiffArray {
     }
     
     public Set<String> GetRpkmSamples(){
-        return this.rpkmvalues.keySet();
+        return this.samples;
     }
     
     public Set<String> GetComp(){
@@ -99,12 +100,19 @@ public class DiffArray {
                 if(!comparisons.contains(comp))
                     comparisons.add(comp);
                 
+                if(!rpkmvalues.containsKey(segs[1]))
+                    rpkmvalues.put(segs[1], new HashMap<>());
+                
                 if(!rpkmvalues.get(segs[1]).containsKey(segs[4]))
                     rpkmvalues.get(segs[1]).put(segs[4], checkDouble(segs[7]));
                 
                 if(!rpkmvalues.get(segs[1]).containsKey(segs[5]))
                     rpkmvalues.get(segs[1]).put(segs[5], checkDouble(segs[8]));
-
+                
+                if(!samples.contains(segs[4]))
+                    samples.add(segs[4]);
+                if(!samples.contains(segs[5]))
+                    samples.add(segs[5]);
             }
         }catch(IOException ex){
             System.err.println("Could not open diff file!!");
@@ -155,7 +163,7 @@ public class DiffArray {
     protected Double checkDouble(String value){
         if(Pattern.matches("[+-]nan", value)){
             return Double.NaN;
-        }else if (Pattern.matches("[+-]inf", value)){
+        }else if (Pattern.matches("[+-]*inf", value)){
             return Double.POSITIVE_INFINITY;
         }else
             return Double.valueOf(value);            

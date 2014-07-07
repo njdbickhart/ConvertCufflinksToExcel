@@ -23,6 +23,7 @@ public class CufflinksCoords <T extends Object> extends BedAbstract{
             String[] coords = utils.UCSCToStringArray.UCSCToArray(ucsc);
             super.initialVals(coords[0], coords[1], coords[2]);
         }catch(BedFileException ex){
+            System.err.println(ex.getMessage());
             ex.printStackTrace();
         }
         this.name = name;

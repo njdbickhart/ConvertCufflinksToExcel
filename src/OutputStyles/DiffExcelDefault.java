@@ -12,8 +12,10 @@ import FormatStatics.HeaderFormats;
 import FormatStatics.HighlightStyle;
 import SetUtils.SortSetToList;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +35,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -66,13 +69,7 @@ public class DiffExcelDefault {
         if(skip.equals("true"))
             exclude = true;
         
-        Workbook wb = null;
-        try {
-            // Set up workbook and create sheet
-            wb = WorkbookFactory.create(new File(file));
-        } catch (IOException | InvalidFormatException ex) {
-            Logger.getLogger(DiffExcelDefault.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Workbook wb = new XSSFWorkbook();
         
         // Get the information that we need from the diff file before proceeding
         TreeSet<String> sampleSet = new TreeSet<>(data.GetRpkmSamples());
@@ -104,7 +101,10 @@ public class DiffExcelDefault {
         // Check if we need to exclude this row        
         CufflinksCoords<DiffArray.DiffData> working = this.data.GetCoordFromLoc(loc);
         Map<String, DiffArray.DiffData> diff = new HashMap<>();
-        working.GetDataContainer().stream().map(e->diff.put(e.GetComp(),e));
+        //working.GetDataContainer().stream().map(e->diff.put(e.GetComp(),e));
+        for(DiffArray.DiffData e : working.GetDataContainer()){
+            diff.put(e.GetComp(), e);
+        }
         if(exclude){
             int x = sampleSet.stream().mapToInt((p) -> this.data.GetSampleRPKM(loc, p) == 0 ? 1 : 0).sum();
             if(x == sampleSet.size())
@@ -231,5 +231,6 @@ public class DiffExcelDefault {
         
         // Freeze the top two panes
         sheet.createFreezePane(0, 2);
+        System.err.println("[DIFF OUT] Created Header Row for output");
     }
 }
