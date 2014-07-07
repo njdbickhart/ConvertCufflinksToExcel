@@ -14,8 +14,8 @@ import java.util.ArrayList;
  *
  * @author bickhart
  */
-public class CufflinksCoords <T extends Object> extends BedAbstract{
-    public String gene;
+public class CufflinksCoords <T> extends BedAbstract{
+    public final String gene;
     public ArrayList<T> holder = null;
     
     public CufflinksCoords(String ucsc, String name, String gene){

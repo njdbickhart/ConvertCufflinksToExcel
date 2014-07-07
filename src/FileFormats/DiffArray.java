@@ -6,7 +6,9 @@
 
 package FileFormats;
 
+import convertcufflinkstoexcel.GeneNameOverlap;
 import file.BedAbstract;
+import file.BedFileException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -25,6 +29,7 @@ import java.util.regex.Pattern;
  */
 public class DiffArray {
     private SampleKeyConversion KeyConvert = null;
+    private GeneNameOverlap GeneUtility = null;
     private final Path DiffFile;
     private final HashMap<String, CufflinksCoords<DiffData>> genomiccoords = new HashMap<>(); // Key is the "LocName"
     private final HashMap<String, HashMap<String, Double>> rpkmvalues = new HashMap<>(); // First key is the "LocName," Second key is the sample id
@@ -74,6 +79,11 @@ public class DiffArray {
         KeyConvert.InitializeConverter();
     }
     
+    public void LoadGeneOverlapper(String file){
+        GeneUtility = new GeneNameOverlap(file);
+        GeneUtility.LoadOverlapper();
+    }
+    
     public void ProcessDiffFile(){
         try(BufferedReader input = Files.newBufferedReader(DiffFile, Charset.defaultCharset())){
             // Gets rid of the header
@@ -90,7 +100,16 @@ public class DiffArray {
                 
                 // Create CufflinksCoord if necessary
                 if(!genomiccoords.containsKey(segs[1])){
-                    genomiccoords.put(segs[1], new CufflinksCoords(segs[3], segs[1], segs[2]));
+                    if(segs[2].equals("-") && this.GeneUtility != null){
+                        String[] values = null;
+                        try {
+                            values = utils.UCSCToStringArray.UCSCToArray(segs[3]);
+                        } catch (BedFileException ex) {
+                            Logger.getLogger(DiffArray.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        segs[2] = this.GeneUtility.getGeneNameInt(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
+                    }
+                    genomiccoords.put(segs[1], new CufflinksCoords<>(segs[3], segs[1], segs[2]));
                 }
                 // Add to dataholder
                 genomiccoords.get(segs[1]).AddToDataContainer(new DiffData(segs));
@@ -119,46 +138,7 @@ public class DiffArray {
         }
     }
         
-    public class DiffData{
-        private final String comparison;
-        private final String status;
-        //private Double value1;
-        //private Double value2;
-        private final Double foldchange;
-        private final Double teststat;
-        private final Double pvalue;
-        private final Double qvalue;
-        private final String significant;
-        
-        public DiffData(String[] segs){
-            // Ignoring the first 4 values of segs, as those are in the genomic coords entry
-            // Sample Key conversion must be done in SuperClass before generating the subclass
-            
-            comparison = segs[4] + " - " + segs[5];
-            status = segs[6];
-            //value1 = this.checkDouble(segs[7]);
-            //value2 = this.checkDouble(segs[8]);
-            foldchange = checkDouble(segs[9]);
-            teststat = checkDouble(segs[10]);
-            pvalue = checkDouble(segs[11]);
-            qvalue = checkDouble(segs[12]);
-            significant = segs[13];
-        }
-        
-        public String GetComp(){
-            return this.comparison;
-        }
-        
-        public String[] GetStrArray(){
-            String[] temp = {status, FDouble(foldchange), FDouble(teststat), 
-                FDouble(pvalue), FDouble(qvalue), significant};
-            return temp;
-        }
-        
-        private String FDouble(Double e){
-            return String.format("%.4f", e);
-        }
-    }   
+       
     
     protected Double checkDouble(String value){
         if(Pattern.matches("[+-]nan", value)){

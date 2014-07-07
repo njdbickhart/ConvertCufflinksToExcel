@@ -52,11 +52,12 @@ public class ConvertCufflinksToExcel {
                         "\t-i\tThe input \".diff\" file" + nl +
                         "\t-o\tThe output file. MUST have .xlsx in the name!" + nl +
                         "\t-k\tA keys file. Converts the \"q1\" sample designations to different names if selected" + nl +
-                        "\t-n\tA flag that removes null entries (no data for any condition) from the excel file" + nl, 
-                "i:o:k:n|", 
+                        "\t-n\tA flag that removes null entries (no data for any condition) from the excel file" + nl +
+                        "\t-g\tInput gene bed file for converting empty gene names into the closest bed coordinate genes" + nl, 
+                "i:o:k:n|g:", 
                 "io", 
-                "iok", 
-                "input", "output", "keysfile");
+                "iokg", 
+                "input", "output", "keysfile", "genes");
         
         return cmd;
     }
