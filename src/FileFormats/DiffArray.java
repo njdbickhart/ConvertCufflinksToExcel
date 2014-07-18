@@ -7,7 +7,6 @@
 package FileFormats;
 
 import convertcufflinkstoexcel.GeneNameOverlap;
-import file.BedAbstract;
 import file.BedFileException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +35,20 @@ public class DiffArray {
     private final Set<String> comparisons = new HashSet<>(); // Key is the sample name, "-", sample name
     
     
+    /**
+     * The constructor of the array. 
+     * @param file The String of the path to the input cuffdiff file
+     */
+    public DiffArray(String file){
+        DiffFile = Paths.get(file);
+    }
+    
+    /**
+     * This returns the sampleRPKM value if given a location name and sample name
+     * @param loc The area location name (ie. CufflinksCoords.name attribute)
+     * @param samp The name of the sample condition
+     * @return The RPKM value for that sample at the locus
+     */
     public Double GetSampleRPKM(String loc, String samp){
         if(rpkmvalues.containsKey(loc))
             if(rpkmvalues.get(loc).containsKey(samp))
@@ -45,6 +57,11 @@ public class DiffArray {
         return null;
     }
     
+    /**
+     * Returns the CufflinksCoords entry for the location
+     * @param loc The genomic location string ID
+     * @return The CufflinksCoords entry for that location
+     */
     public CufflinksCoords<DiffData> GetCoordFromLoc(String loc){
         if(genomiccoords.containsKey(loc))
             return genomiccoords.get(loc);
@@ -52,38 +69,62 @@ public class DiffArray {
             return null;
     }
     
+    /**
+     * Returns a list of all of the stored coordinate locations for this sample
+     * @return A set of coordinate locations (ie. "loc" strings for the rest of
+     * this class's methods)
+     */
     public Set<String> GetCoordLocs(){
         return this.genomiccoords.keySet();
     }
     
+    /**
+     * Returns a list of all of the samples that have RPKM values for this experiment
+     * @return A set of sample names (ie. "samp" strings for the rest of this
+     * class's methods
+     */
     public Set<String> GetRpkmSamples(){
         return this.samples;
     }
     
+    /**
+     * Returns all of the pairwise comparisons performed in this experiment
+     * @return A set of all pairwise comparisons (denoted as "sample1 - sample2" format)
+     */
     public Set<String> GetComp(){
         return this.comparisons;
     }
     
-    public DiffArray(String file){
-        DiffFile = Paths.get(file);
-    }
+    
     
     /*
     Diff files look like this:
     test_id gene_id gene    locus   sample_1        sample_2        status  value_1 value_2 log2(fold_change)       test_stat       p_value q_value significant
     XLOC_000001     XLOC_000001     Gm16088 1:3054232-3054733       q1      q2      NOTEST  0       0       0       0       1       1       no
     */
-    
+
+    /**
+     * Imports a keyconversion file for changing sample names
+     * @param file The string representation of the path to the keyconversion file
+     */    
     public void LoadKeyConversion(String file){
         KeyConvert = new SampleKeyConversion(file);
         KeyConvert.InitializeConverter();
     }
     
+    /**
+     * Imports the gene bed file for gene coordinate intersections
+     * @param file The string representation of the path to the gene bed file
+     */
     public void LoadGeneOverlapper(String file){
         GeneUtility = new GeneNameOverlap(file);
         GeneUtility.LoadOverlapper();
     }
     
+    /**
+     * The main workhorse method. Run this after the constructor in order to 
+     * load the Cuffdiff file and process its contents.
+     */
     public void ProcessDiffFile(){
         try(BufferedReader input = Files.newBufferedReader(DiffFile, Charset.defaultCharset())){
             // Gets rid of the header
@@ -138,8 +179,12 @@ public class DiffArray {
         }
     }
         
-       
-    
+    /**
+     * This is a utility method designed to check a string value and convert it
+     * to a type-safe java double value
+     * @param value The string that should be a double 
+     * @return A type-safe double value that accounts for c++ inf and nan values
+     */
     protected Double checkDouble(String value){
         if(Pattern.matches("[+-]nan", value)){
             return Double.NaN;

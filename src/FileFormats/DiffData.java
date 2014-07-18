@@ -9,7 +9,8 @@ package FileFormats;
 import java.util.regex.Pattern;
 
 /**
- *
+ * This class contains important attributes derived from each line of the 
+ * Cuffdiff file
  * @author bickhart
  */
 public class DiffData{
@@ -23,6 +24,11 @@ public class DiffData{
     private final Double qvalue;
     private final String significant;
 
+    /**
+     * This constructor is designed to encapsulate the processing of the segments
+     * of the Cuffdiff file. 
+     * @param segs The line segments from the Cuffdiff file
+     */
     public DiffData(String[] segs){
         // Ignoring the first 4 values of segs, as those are in the genomic coords entry
         // Sample Key conversion must be done in SuperClass before generating the subclass
@@ -38,10 +44,19 @@ public class DiffData{
         significant = segs[13];
     }
 
+    /**
+     * Returns which comparison this data file was derived from
+     * @return The comparison name (ie. "sample1 - sample2")
+     */
     public String GetComp(){
         return this.comparison;
     }
 
+    /**
+     * Returns the string representation of the attributes of this class
+     * @return A string array containing the following elements: {status, foldchange,
+     * teststatistic values, pvalue, qvalue, if this comparison was significant (yes/no)}
+     */
     public String[] GetStrArray(){
         String[] temp = {status, FDouble(foldchange), FDouble(teststat), 
             FDouble(pvalue), FDouble(qvalue), significant};

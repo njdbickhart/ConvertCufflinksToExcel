@@ -19,13 +19,21 @@ import java.util.HashMap;
  * @author bickhart
  */
 public class SampleKeyConversion {
-    private Path keyfile;
-    private HashMap<String, String> converter = new HashMap<>();
+    private final Path keyfile;
+    private final HashMap<String, String> converter = new HashMap<>();
     
+    /**
+     * This creates the attributes for the class
+     * @param keyfile A string representation of the path to the key file
+     */
     public SampleKeyConversion(String keyfile){
         this.keyfile = Paths.get(keyfile);
     }
     
+    /**
+     * This loads the information from the sample key file into the Map attribute
+     * of this class.
+     */
     public void InitializeConverter(){
         try(BufferedReader input = Files.newBufferedReader(keyfile, Charset.defaultCharset())){
             String line = null;
@@ -42,6 +50,13 @@ public class SampleKeyConversion {
         }
     }
     
+    /**
+     * This is the main method of this utility as it allows the lookup of sample names
+     * for conversion.
+     * @param key The name of the sample to be converted
+     * @return The converted name (or the name of the sample if it does not find it in 
+     * the key file)
+     */
     public String GetValue(String key){
         if(converter.containsKey(key))
             return converter.get(key);
