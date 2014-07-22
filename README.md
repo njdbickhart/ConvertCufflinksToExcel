@@ -1,9 +1,9 @@
-####ConvertCufflinksToExcel
+#ConvertCufflinksToExcel
 =======================
 
 This program converts several cufflinks output files into easily readable excel tables using Apache's POI library. Currently, only the "cuffdiff" output format is supported, but this may change in future versions.
 
-###Installation
+##Installation
 =======================
 
 ConvertCufflinksToExcel is designed to run on low-moderate memory (> 8gb RAM) Linux servers, though it may require more memory with larger datasets.
@@ -20,7 +20,7 @@ Once you have installed the JDK, you can run the program using the following com
 
 You should see a usage statement if you are using the proper JDK version.
 
-###Usage
+##Usage
 =========================
 
 In order to view the usage statement, run the command without any arguments:
@@ -47,7 +47,7 @@ Here is a more detailed outline of command line input options:
 * -k (optional) An input "keys" file that will change the condition names. Useful if your samples are still labeled as "q1," "q2," etc...
 * -g (optional) An input gene bed file that can be used to annotate locations. This is useful if you are dealing with custom transcript assemblies that are not annotated by your cufflinks gtf file
 
-#Keys file
+####Keys file
 This tab-delimited file follows a simple format: column 1 is the name of the sample/condition you wish to change, and column 2 is the name that you would prefer the sample to be called.
 An example:
 ```
@@ -55,7 +55,7 @@ q1  mammarystemcells
 q2  hematopoieticstemcells
 ```
 
-#Gene bed file
+####Gene bed file
 This tab-delimited file follows the bed file conventions found on the [UCSC genome browser](http://genome.ucsc.edu/FAQ/FAQformat.html#format1) (only the first 4 fields are required).
 If this option is given to the program, it will annotate unannotated gene locations in your excel file (ie. regions that do not have a gene name) with the regions indicated in the bed file.
 An example bed file:
