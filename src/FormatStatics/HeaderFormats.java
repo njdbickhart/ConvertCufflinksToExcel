@@ -15,6 +15,11 @@ import org.apache.poi.ss.usermodel.*;
  */
 public class HeaderFormats {
     
+    /**
+     * A method to create a header style that is Grey in color and bold
+     * @param wb The current workbook object
+     * @return The desired cellstyle format
+     */
     public static CellStyle GreyBoldCenterHeader(Workbook wb){
         CellStyle style;
         Font headerFont = wb.createFont();
@@ -27,6 +32,11 @@ public class HeaderFormats {
         return style;
     }
     
+    /**
+     * A generic method for creating a cell style with a gray bold header
+     * @param wb The current workbook object
+     * @return The desired cellstyle format
+     */
     public static CellStyle GreyBoldHeader(Workbook wb){
         CellStyle style;
         Font headerFont = wb.createFont();
@@ -38,6 +48,11 @@ public class HeaderFormats {
         return style;
     }
     
+    /**
+     * A generic method for creating a cell style with a gray header
+     * @param wb The current workbook object
+     * @return The desired cellstyle format
+     */
     public static CellStyle GreyHeader(Workbook wb){
         CellStyle style;
         Font headerFont = wb.createFont();
@@ -48,6 +63,12 @@ public class HeaderFormats {
         return style;
     }
     
+    /**
+     * A generic method for creating a cell style with a custom color bold header
+     * @param wb The current workbook object
+     * @param color a lowercase string indicating the color desired
+     * @return The desired cellstyle format
+     */
     public static CellStyle CustomBoldCenterHeader(Workbook wb, String color){
         CellStyle style;
         Font headerFont = wb.createFont();
@@ -60,6 +81,13 @@ public class HeaderFormats {
         return style;
     }
     
+    /**
+     * A generic method for creating a cell style with a custom bold header
+     * @param wb The current workbook object
+     * @param color a short value indicating the color desired; from the Apache
+     * POI short list of colors
+     * @return The desired cellstyle format
+     */
     public static CellStyle CustomBoldCenterHeader(Workbook wb, short color){
         CellStyle style;
         Font headerFont = wb.createFont();

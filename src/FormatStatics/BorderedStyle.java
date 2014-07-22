@@ -13,6 +13,13 @@ import org.apache.poi.ss.usermodel.*;
  * @author bickhart
  */
 public class BorderedStyle {
+
+    /**
+     * This method alters the workbook object to create a completely bordered
+     * cell for use in tables.
+     * @param wb The current workbook object that will use the bordered style
+     * @return A bordered cell style.
+     */
     public static CellStyle createBorderedStyle(Workbook wb){
         CellStyle style = wb.createCellStyle();
         style.setBorderRight(CellStyle.BORDER_THIN);

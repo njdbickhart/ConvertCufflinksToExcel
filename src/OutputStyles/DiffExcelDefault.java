@@ -55,12 +55,23 @@ public class DiffExcelDefault {
         IndexedColors.BLUE_GREY.getIndex()};
     private boolean exclude = false;
     
+    /**
+     * The constructor for the class
+     * @param data A DiffArray class that has been previously generated
+     */
     public DiffExcelDefault(DiffArray data){
         this.data = data;
         headerStyles = new HashMap<>(); 
         highlightStyles = new HashMap<>();
     }
     
+    /**
+     * The output generating class. Creates an excel file at the path indicated
+     * by the String, file
+     * @param file The String representation of the output path location
+     * @param skip A string "true or false" value derived from my command line
+     * option interpreter class.
+     */
     public void OutputDiffToExcel(String file, String skip){
         // Set boolean skip flag if zero values should be avoided
         if(skip.equals("true"))

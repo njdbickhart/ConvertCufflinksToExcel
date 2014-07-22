@@ -25,10 +25,18 @@ public class GeneNameOverlap extends LineIntersect<BedSimple>{
     private final Path path;
     private BedMap<BedSimple> data;
     
+    /**
+     * The constructor of the class
+     * @param file A String representation of the file path to the bed file
+     * containing gene locations
+     */
     public GeneNameOverlap(String file){
         path = Paths.get(file);
     }
     
+    /**
+     * This method loads the bed file into memory for the overlapper utility method
+     */
     public void LoadOverlapper(){
         data = new BedMap<>();
         try(BufferedReader input = Files.newBufferedReader(path, Charset.defaultCharset())){
@@ -43,6 +51,15 @@ public class GeneNameOverlap extends LineIntersect<BedSimple>{
         }
     }
     
+    /**
+     * This method returns the "name" (fourth column of the bed file) of the gene
+     * when given a chromosome interval
+     * @param chr The chromosome to search
+     * @param start The beginning coordinate to search within
+     * @param end The ending coordinate for the interval
+     * @return Returns a concatenated list of gene names (separator: ";") or a
+     * single dash ("-") if no gene is found in the interval.
+     */
     public String getGeneNameInt(String chr, int start, int end){
         ArrayList<BedSimple> holder = this.returnTypeIntersect(data, chr, start, end);
         if(holder.isEmpty())

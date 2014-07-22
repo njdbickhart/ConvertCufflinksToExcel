@@ -17,10 +17,18 @@ import OutputStyles.DiffExcelDefault;
 public class DiffMode {
     private final SimpleModeCmdLineParser cmd;
     
+    /**
+     * The constructor for the class
+     * @param cmd The input command line parser object, properly filled out
+     */
     public DiffMode(SimpleModeCmdLineParser cmd){
         this.cmd = cmd;
     }
     
+    /**
+     * The main workhorse method. Could be changed to implement "Runnable" in
+     * the future.
+     */
     public void run(){
         DiffArray diff = new DiffArray(cmd.GetValue("input"));
         
