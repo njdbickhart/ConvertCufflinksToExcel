@@ -41,11 +41,11 @@ If you are looking to quickly convert a file with no special options, then here 
 
 Here is a more detailed outline of command line input options:
 
-*-i (required) The input diff file that will be converted
-*-o (required) The output excel file. Please note that you MUST include the ".xlsx" suffix to the file name!
-*-n (optional; takes no arguments) Skip a gene location in the diff file if it has no FPKM value across all conditions
-*-k (optional) An input "keys" file that will change the condition names. Useful if your samples are still labeled as "q1," "q2," etc...
-*-g (optional) An input gene bed file that can be used to annotate locations. This is useful if you are dealing with custom transcript assemblies that are not annotated by your cufflinks gtf file
+* -i (required) The input diff file that will be converted
+* -o (required) The output excel file. Please note that you MUST include the ".xlsx" suffix to the file name!
+* -n (optional; takes no arguments) Skip a gene location in the diff file if it has no FPKM value across all conditions
+* -k (optional) An input "keys" file that will change the condition names. Useful if your samples are still labeled as "q1," "q2," etc...
+* -g (optional) An input gene bed file that can be used to annotate locations. This is useful if you are dealing with custom transcript assemblies that are not annotated by your cufflinks gtf file
 
 #Keys file
 This tab-delimited file follows a simple format: column 1 is the name of the sample/condition you wish to change, and column 2 is the name that you would prefer the sample to be called.
